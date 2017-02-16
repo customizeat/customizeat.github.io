@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="static/js/jquery.min.js"></script>
   <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/handlebars-v4.0.5.js"></script>
+  <script id="entry-template" src="templates/carousels/carousels_item.tpl.js"></script>
   <script src="app/handler/httpRequestHandler.js"></script>
   <script src="app/handler/cacheRequestHandler.js"></script>
   <script src="app/handler/requestHandler.js"></script>
@@ -142,7 +144,6 @@
   </style>
 </head>
 <body style="background-color: #ffffff;">
-
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
@@ -258,7 +259,7 @@
 </div>
 <div class="container text-center" style="background-color: #ffffff;">
 <div>
-  <h3>Daily Best</h3><br>
+  <h3>Daily Best</h3><a class='btn btn-primary' onclick='replaceCarousel();'>Replace with handlebars data</a><br>
 
 
 <p>
@@ -269,6 +270,7 @@
       <li data-target="#myCarousel" data-slide-to="1"></li>
       <li data-target="#myCarousel" data-slide-to="2"></li>
       <li data-target="#myCarousel" data-slide-to="3"></li>
+      <li data-target="#myCarousel" data-slide-to="4"></li>
     </ol>
 
     <!-- Wrapper for slides -->

@@ -1,0 +1,30 @@
+{
+  "name": "customizeat.github.io",
+  "version": "0.0.1",
+  "description": "Customizeat website",
+  "main": "app/main.js",
+  "dependencies": {
+    "handlebars": "^4.0.6"
+  },
+  "devDependencies": {
+    "handlebars": "^4.0.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/customizeat/customizeat.github.io.git"
+  },
+  "keywords": [
+    "customizeat",
+    "prototype",
+    "website"
+  ],
+  "author": "Joseph Ellyson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/customizeat/customizeat.github.io/issues"
+  },
+  "homepage": "https://github.com/customizeat/customizeat.github.io#readme"
+}
