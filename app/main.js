@@ -19,6 +19,7 @@ console.log(Handlebars.templates);
 console.log(Handlebars.templates['carousels_item.hbs']);
 
 // read from pre compiled template to build html.
+// reading from templates/carousels/carousels_item.tpl.js
 var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
 var json = {
     url: 'http://vikschaat.com/wp-content/uploads/2015/03/food_900x500-9-900x500.png',
