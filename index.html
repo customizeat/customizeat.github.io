@@ -9,6 +9,7 @@
   <script src="app/handler/httpRequestHandler.js"></script>
   <script src="app/handler/cacheRequestHandler.js"></script>
   <script src="app/handler/requestHandler.js"></script>
+  <script src="app/handler/APIInterface.js"></script>
   <script src="app/main.js"></script>
   <link rel="stylesheet" href="static/css/bootstrap.min.css">
   <link rel="stylesheet" href="static/css/override.css">
@@ -189,7 +190,7 @@
 <div class="jumbotron">
   <div class="container text-center">
       <h2>&nbsp;</h2>
-      <form>
+      <form id="recipeSearchForm">
         <div class="col-md-8 col-md-offset-2">
           <!-- form for laptops and desktops -->
           <div class="input-group input-group-lg hidden-xs hidden-sm">
@@ -200,9 +201,9 @@
                 </span>
               </a>
             </span>
-            <input type="text" class="form-control" placeholder="Find a recipe!">
+            <input type="text" class="form-control" id="searchQuery" placeholder="Find a recipe!">
             <span class="input-group-btn">
-              <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+              <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
             </span>
           </div>
 
@@ -217,7 +218,7 @@
             </span>
             <input type="text" class="form-control" placeholder="Find a Recipe">
             <span class="input-group-btn">
-              <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+              <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
             </span>
           </div>
 
