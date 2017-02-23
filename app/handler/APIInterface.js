@@ -4,8 +4,9 @@ function APIInterface(reqHandler, userParams = {}) {
         base: 'https://api.yummly.com/v1/api',
         searchRecipes: '/recipes', // recipes?q
         getRecipe: '/recipe/', // recipe/recipe-id?
-        metadata: '/metadata/' // metadata/ingredient?
-      }
+        getMetadata: '/metadata/' // metadata/ingredient?
+      },
+      authParams: '?_app_id=9cce27e7&_app_key=b13c741344519e5f89cb0edb7e8043f6'
     };
     module.defaultParams = {
         requirePictures: 'true'
@@ -85,9 +86,9 @@ function APIInterface(reqHandler, userParams = {}) {
 
       // https://api.yummly.com/v1/api/metadata
       var url = module.urls.base + module.urls.getMetadata;
-      var fullUrl = url + dataType
-
-      var res = reqHandler.get(fullUrl);
+      var fullUrl = url + dataType + module.authParams;
+      console.log(fullUrl);
+      var res = reqHandler.getJSONP(fullUrl);
       res.then(function(result) {
         console.log('successfully fetched metadata info');
         console.log(result);

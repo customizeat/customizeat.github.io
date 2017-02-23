@@ -10,3 +10,5 @@ $(document).ready(function() {
     api.searchRecipes(searchQuery);
   });
 });
+
+api.getMetadata('allergy');

@@ -17,7 +17,7 @@ function HttpRequestHandler() {
                 'code': 400
             };
 
-            var request = $.ajax({
+            $.ajax({
                 method: "GET",
                 headers: module.headers,
                 dataType: "json",
@@ -27,7 +27,7 @@ function HttpRequestHandler() {
                     rtn.response = data;
                     resolve(rtn);
                 },
-                fail: function (error) {
+                error: function (error) {
                     rtn.code = 400;
                     rtn.response = error;
                     reject(rtn);
@@ -35,6 +35,41 @@ function HttpRequestHandler() {
             });
         });
     };
+
+    module.getJSONP = function (url) {
+      return new Promise (function(resolve, reject) {
+          var rtn = {
+              'response': '',
+              'code': 400
+          };
+
+          function set_metadata (dataType, data) {
+              //
+              console.log(dataType);
+              console.log(data);
+          };
+
+          $.ajax({
+              method: "GET",
+              headers: module.headers,
+              dataType: "jsonp",
+              url: url,
+              jsonpCallback: 'set_metadata',
+              success: function (data) {
+                  console.log('successfully here');
+                  rtn.code = 200;
+                  rtn.response = data;
+                  resolve(rtn);
+              },
+              error: function (error) {
+                  console.log('error here');
+                  rtn.code = 400;
+                  rtn.response = error;
+                  reject(rtn);
+              }
+          });
+      });
+    }
 
     return module;
 }
