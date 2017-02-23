@@ -73,12 +73,12 @@ var carouselsItemDiv4 = carouselsItemTpl({json: json4});
 
 // replace the contents when the button is clicked
 function replaceCarousel() {
-  $('div.carousel-inner').html('');
-  $('div.carousel-inner').append(carouselsItemDiv);
-  $('div.carousel-inner').append(tplBuilt);
-  $('div.carousel-inner').append(carouselsItemDiv3);
-  $('div.carousel-inner').append(carouselsItemDiv4);
-  $('div.carousel-inner').children().first().addClass('active');
+  $('#recommendation').html('');
+  $('#recommendation').append(carouselsItemDiv);
+  $('#recommendation').append(tplBuilt);
+  $('#recommendation').append(carouselsItemDiv3);
+  $('#recommendation').append(carouselsItemDiv4);
+  $('#recommendation').children().first().addClass('active');
 }
 
 $(document).ready(function() {
@@ -114,9 +114,13 @@ console.log(basicItemDiv1);
 
 // replace the contents when the button is clicked
 function replaceCarousel1() {
-  $('div.row').html('');
-  $('div.row').append(basicItemDiv1);
-  $('div.row').children().first().addClass('active');
+  $('#recipeResults').html('');
+  $('#recipeResults').append(basicItemDiv1);
+  $('#recipeResults').append(basicItemDiv1);
+  $('#recipeResults').append(basicItemDiv1);
+  $('#recipeResults').append(basicItemDiv1);
+  $('#recipeResults').append(basicItemDiv1);
+  $('#recipeResults').children().first().addClass('active');
 }
 
 $(document).ready(function() {
