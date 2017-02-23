@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Detailed Page Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="app/handler/httpRequestHandler.js"></script>
+  <script src="app/handler/cacheRequestHandler.js"></script>
+  <script src="app/handler/requestHandler.js"></script>
+  <script src="app/main.js"></script>
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/override.css">
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */
+
+    table td {
+      padding: 4px 8px;
+    }
+
+    #stars > span {
+      display: inline-block;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    #stars:hover > span:before {
+      content: '\2605';
+      position: absolute;
+    }
+
+    #stars > span:hover ~ span::before {
+      content: '';
+    }
+
+    .flex-container {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    text-align: center;
+    }
+
+    .flex-container > * {
+        padding: 15px;
+        -webkit-flex: 1 100%;
+        flex: 1 100%;
+    }
+
+    .article {
+        text-align: left;
+    }
+
+    header {background: #fca08d; color: black;}
+    .nav1 {
+      background:#eee;
+    }
+
+    .nav1 ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    .nav1 ul a {
+        text-decoration: none;
+    }
+
+    @media all and (min-width: 768px) {
+        .nav1 {text-align:left;-webkit-flex: 1 auto;flex:1 auto;-webkit-order:1;order:1;}
+        .article {-webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;}
+        footer {-webkit-order:3;order:3;}
+    }
+
+
+
+
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    .w3-bottombar{
+      border-bottom: 1px solid #000 !important;
+    }
+
+    .well-white {
+      background-color: #fff !important;
+    }
+
+    .tooltip{
+      z-index: 100000000;
+    }
+
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      display: block;
+      background-color: #161616;
+      padding: 25px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    ::selection {
+    color: #000;
+    background: #FCA08D;
+    }
+
+    .hovereffect {
+      width: 100%;
+      height: 100%;
+      float: left;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+      cursor: default;
+    }
+
+    .hovereffect .overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      background-color: rgba(0,0,0,0.5);
+      -webkit-transition: all 0.4s cubic-bezier(0.88,-0.99, 0, 1.81);
+      transition: all 0.4s cubic-bezier(0.88,-0.99, 0, 1.81);
+    }
+
+    .hovereffect img {
+      display: block;
+      position: relative;
+      -webkit-transition: all 0.4s cubic-bezier(0.88,-0.99, 0, 1.81);
+      transition: all 0.4s cubic-bezier(0.88,-0.99, 0, 1.81);
+    }
+
+    .hovereffect h3 {
+      text-transform: uppercase;
+      color: #ffffff;
+      text-align: center;
+      position: relative;
+      font-size: 17px;
+      background: rgba(0,0,0,0.6);
+      -webkit-transform: translatey(-100px);
+      -ms-transform: translatey(-100px);
+      transform: translatey(-100px);
+      -webkit-transition: all 0.4s cubic-bezier(0.88,-0.99, 0, 1.81);
+      transition: all 0.4s cubic-bezier(0.88,-0.99, 0, 1.81);
+      padding: 10px;
+    }
+
+    .hovereffect a.info {
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      color: #fff;
+      border: 1px solid #fff;
+      background-color: transparent;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      -webkit-transition: all 0.4s ease;
+      transition: all 0.4s ease;
+      margin: 50px 0 0;
+      padding: 7px 14px;
+    }
+
+    .hovereffect a.info:hover {
+      box-shadow: 0 0 5px #fff;
+    }
+
+    .hovereffect:hover img {
+      -ms-transform: scale(1.2);
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
+    }
+
+    .hovereffect:hover .overlay {
+      opacity: 1;
+      filter: alpha(opacity=100);
+    }
+
+    .hovereffect:hover h3,.hovereffect:hover a.info {
+      opacity: 1;
+      filter: alpha(opacity=100);
+      -ms-transform: translatey(0);
+      -webkit-transform: translatey(0);
+      transform: translatey(0);
+    }
+
+    .hovereffect:hover a.info {
+      -webkit-transition-delay: .2s;
+      transition-delay: .2s;
+    }
+
+  .carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 70%;
+      margin: auto;
+  }
+
+  body {
+    padding-top: 50px;
+  }
+  </style>
+</head>
+<body style="background-color: #ffffff;">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Customiz-Eat<span class="glyphicon glyphicon-cutlery"></span></a>
+      <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-search"></span></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#browse" class="dropdown-toggle" data-toggle="dropdown">Browse<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href='#'>New/Trending</a></li>
+            <li><a href='#'>Categories<span></span></a></li>
+            <li><a href='#'>Cuisines</a></li>
+            <li><a href='#'>Diet</a></li>
+            <li><a href='#'>Chef's Recipes</a></li><!-- chef-rated users' recipes -->
+          </ul>
+        </li>
+        <li><a href="#gallery">Gallery</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href='#like' class='btn-lg'><span class="glyphicon glyphicon-heart"></span></a></li>
+        <li class="dropdown">
+          <a href='#like' class='dropdown-toggle btn-lg' data-toggle="dropdown">
+            <span class="glyphicon glyphicon-cog"></span><span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href='#'>Preferences</a></li>
+            <li><a href='#'>item1</a></li>
+            <li><a href='#'>item2</a></li>
+            <li><a href='#'>item3</a></li>
+          </ul>
+        </li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>&nbsp;Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="container text-center">
+<header>
+  <table>
+    <td> <h3> French Fries </h3> </td>
+
+    <td>
+      <div id="stars">
+        <span>&#9734</span>
+        <span>&#9734</span>
+        <span>&#9734</span>
+        <span>&#9734</span>
+        <span>&#9734</span>
+      </div>
+    </td>
+  </table>
+</header>
+
+<div>
+  <div class="container text-center">
+    <img class="img-responsive center-block" src="https://frontroweats.files.wordpress.com/2011/06/img_0451.jpg" alt="Responsive image">
+  </div>
+
+
+</div>
+
+
+<nav class="nav1">
+<ul>
+  <li text-decoration: > INGREDIENT </li>
+  <li> Potato </li>
+  <li> Cooking oil </li>
+  <li> Tokyo </li>
+</ul>
+</nav>
+
+<article class="article">
+  <h1></h1>
+  <p>London is the capital city of England. It is the most populous city in the United Kingdom,
+  with a metropolitan area of over 13 million inhabitants.</p>
+  <p>Standing on the River Thames, London has been a major settlement for two millennia,
+  its history going back to its founding by the Romans, who named it Londinium.</p>
+  <p><strong>Resize this page to see that what happens!</strong></p>
+</article>
+
+</div>
+
+
+
+
+</body>
+</html>
