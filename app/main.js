@@ -47,14 +47,76 @@ var tplOnTheFly = '<div class="item">' +
 var tplCompiled = Handlebars.compile(tplOnTheFly);
 console.log(tplCompiled);
 var tplBuilt = tplCompiled({json: json2});
-console.log(tplBuilt);
+
+// carousel3
+var json3 = {
+  url: 'http://www.twirlweddings.com/wp-content/uploads/2015/07/great-performances-food-plated-900x500.jpg',
+  alt_name: 'altImg',
+  name: 'Beet Salad',
+  description: 'Beet Salad'
+};
+
+var carouselsItemDiv3 = carouselsItemTpl({json: json3});
+
+//carousel4
+
+var json4 = {
+  url: 'http://www.vancitybuzz.com/wp-content/uploads/2015/01/salmon-maki-vancouver-900x500.jpg',
+  alt_name: 'altImg',
+  name: 'Salmon rolls',
+  description: 'salmon rolls'
+};
+
+var carouselsItemDiv4 = carouselsItemTpl({json: json4});
+
+
 
 // replace the contents when the button is clicked
 function replaceCarousel() {
   $('div.carousel-inner').html('');
   $('div.carousel-inner').append(carouselsItemDiv);
   $('div.carousel-inner').append(tplBuilt);
+  $('div.carousel-inner').append(carouselsItemDiv3);
+  $('div.carousel-inner').append(carouselsItemDiv4);
   $('div.carousel-inner').children().first().addClass('active');
+}
+
+$(document).ready(function() {
+  // uncomment to replace as soon as document loads.
+  /*
+  $('div.carousel-inner').html('');
+  $('div.carousel-inner').append(carouselsItemDiv);
+  $('div.carousel-inner').append(tplBuilt);
+  $('div.carousel-inner').children().first().addClass('active');
+  */
+});
+
+
+console.log(Handlebars.templates);
+console.log(Handlebars.templates['imageTemplates.hbs']);
+
+
+var basicItemTpl = Handlebars.templates['imageTemplates.hbs'];
+
+var basicImg1 = {
+  url: 'http://bbqworld.org/wp-content/uploads/2016/05/28-day-Dry-Aged-Sirloin11.jpg',
+  alt_name: 'altImg',
+  hoverDescription: 'Very Declious',
+  cookTime: '300 Min.',
+  name: 'foodName',
+  description: 'foodDescription'
+};
+
+
+var basicItemDiv1 = basicItemTpl({json: basicImg1});
+console.log(basicItemDiv1);
+
+
+// replace the contents when the button is clicked
+function replaceCarousel1() {
+  $('div.row').html('');
+  $('div.row').append(basicItemDiv1);
+  $('div.row').children().first().addClass('active');
 }
 
 $(document).ready(function() {
