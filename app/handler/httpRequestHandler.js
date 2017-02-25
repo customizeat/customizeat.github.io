@@ -10,6 +10,8 @@ function HttpRequestHandler() {
         module.headers = headers;
     };
 
+    module.jsonpResult = null;
+
     module.get = function (url) {
         return new Promise (function(resolve, reject) {
             var rtn = {
@@ -43,29 +45,25 @@ function HttpRequestHandler() {
               'code': 400
           };
 
-          function set_metadata (dataType, data) {
-              //
-              console.log(dataType);
-              console.log(data);
-          };
-
           $.ajax({
               method: "GET",
               headers: module.headers,
               dataType: "jsonp",
               url: url,
-              jsonpCallback: 'set_metadata',
-              success: function (data) {
-                  console.log('successfully here');
-                  rtn.code = 200;
-                  rtn.response = data;
-                  resolve(rtn);
-              },
-              error: function (error) {
-                  console.log('error here');
-                  rtn.code = 400;
-                  rtn.response = error;
-                  reject(rtn);
+              jsonp: 'callback',
+              complete: function (response) {
+                  if (response.status === 200 && module.jsonpResult) {
+                    rtn.code = 200;
+                    // copy a new instance of the object
+                    rtn.response = Object.assign({}, module.jsonpResult.data);
+                    // null out the jsonpResult for next call.
+                    module.jsonpResult = null;
+                    resolve(rtn);
+                  } else {
+                    rtn.code = response.status;
+                    rtn.response = response.statusText;
+                    reject(rtn);
+                  }
               }
           });
       });

@@ -3,7 +3,7 @@ function RequestHandler(httpRequestHandler, cacheRequestHandler) {
     module.httpRequestHandler = httpRequestHandler;
     module.cacheRequestHandler = cacheRequestHandler;
 
-    module.get = function (url, headers={}) {
+    module.get = function (url, headers={}, dataType='json') {
         return new Promise(function(resolve, reject) {
             var rtn = {
                 'response': '',
@@ -29,7 +29,12 @@ function RequestHandler(httpRequestHandler, cacheRequestHandler) {
                     module.httpRequestHandler.setHeaders(headers);
                 }
 
-                var response = module.httpRequestHandler.get(url); // this should return { response: {}, code: # }
+                var response;
+                if (dataType === 'jsonp') {
+                  response = module.httpRequestHandler.getJSONP(url);
+                } else {
+                  response = module.httpRequestHandler.get(url);
+                }
                 response.then(function(data) {
                   var responseText = data.response;
                   var responseCode = data.code;

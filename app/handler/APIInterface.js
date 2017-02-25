@@ -88,7 +88,7 @@ function APIInterface(reqHandler, userParams = {}) {
       var url = module.urls.base + module.urls.getMetadata;
       var fullUrl = url + dataType + module.authParams;
       console.log(fullUrl);
-      var res = reqHandler.getJSONP(fullUrl);
+      var res = reqHandler.get(fullUrl, {}, 'jsonp');
       res.then(function(result) {
         console.log('successfully fetched metadata info');
         console.log(result);
@@ -100,3 +100,12 @@ function APIInterface(reqHandler, userParams = {}) {
 
     return module;
 }
+
+// once jsonp call is complete for getMetadata, this will be called.
+function set_metadata (dataType, data) {
+    console.log('setting metadata in APIInterface');
+    hrh.jsonpResult = {
+      'type': dataType,
+      'data': data
+    };
+};
