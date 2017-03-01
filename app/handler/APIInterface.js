@@ -55,7 +55,7 @@ function APIInterface(reqHandler, userParams = {}) {
       return queryParams;
     };
 
-    module.searchRecipes = function (query) {
+    module.searchRecipes = function (query, requestParams={}) {
       return new Promise(function (resolve, reject) {
         if (!query || !query.length) {
           reject({
@@ -67,7 +67,7 @@ function APIInterface(reqHandler, userParams = {}) {
         // https://api.yummly.com/v1/api/recipes
         var url = internals.urls.base + internals.urls.searchRecipes;
         // ?onion+soup?requestPictures=true
-        var queryParams = module.buildQueryParams(query);
+        var queryParams = module.buildQueryParams(query, requestParams);
         // https://api.yummly.com/v1/api/recipes?onion+soup?requestPictures=true
         var fullUrl = url + queryParams;
 
