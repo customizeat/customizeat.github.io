@@ -1,17 +1,29 @@
 function APIInterface(reqHandler, userParams = {}) {
-    var module = {
+    // exposing it to consumer for proper use
+    var module = {};
+
+    // no need to expose to consumer
+    var internals = {
       urls: {
         base: 'https://api.yummly.com/v1/api',
         searchRecipes: '/recipes', // recipes?q
         getRecipe: '/recipe/', // recipe/recipe-id?
         getMetadata: '/metadata/' // metadata/ingredient?
       },
-      authParams: '?_app_id=9cce27e7&_app_key=b13c741344519e5f89cb0edb7e8043f6'
-    };
-    module.defaultParams = {
+      authParams: '?_app_id=9cce27e7&_app_key=b13c741344519e5f89cb0edb7e8043f6',
+      metadataKeys: [
+          'ingredient',
+          'diet',
+          'allergy',
+          'cuisine',
+          'course',
+          'holiday',
+      ],
+      defaultParams: {
         requirePictures: 'true'
+      },
+      userParams: userParams
     };
-    module.userParams = userParams;
 
     // returns query parameters [?q=onion+soup&requirePictures=true]
     // searchText is the text entered in the search bar,
@@ -36,65 +48,82 @@ function APIInterface(reqHandler, userParams = {}) {
       // Add this request's params
       queryParams = addParams(queryParams, requestParams);
       // Add user's params
-      queryParams = addParams(queryParams, module.userParams);
+      queryParams = addParams(queryParams, internals.userParams);
       // Add App default params
-      queryParams = addParams(queryParams, module.defaultParams);
+      queryParams = addParams(queryParams, internals.defaultParams);
 
       return queryParams;
     };
 
     module.searchRecipes = function (query) {
-      if (!query || !query.length) { return; }
+      return new Promise(function (resolve, reject) {
+        if (!query || !query.length) {
+          reject({
+            'response': 'query is incomplete!',
+            'code': 400
+          });
+        }
 
-      // https://api.yummly.com/v1/api/recipes
-      var url = module.urls.base + module.urls.searchRecipes;
-      // ?onion+soup?requestPictures=true
-      var queryParams = module.buildQueryParams(query);
-      // https://api.yummly.com/v1/api/recipes?onion+soup?requestPictures=true
-      var fullUrl = url + queryParams;
+        // https://api.yummly.com/v1/api/recipes
+        var url = internals.urls.base + internals.urls.searchRecipes;
+        // ?onion+soup?requestPictures=true
+        var queryParams = module.buildQueryParams(query);
+        // https://api.yummly.com/v1/api/recipes?onion+soup?requestPictures=true
+        var fullUrl = url + queryParams;
 
-      console.log('querying fullUrl: ' + fullUrl);
-      var res = reqHandler.get(fullUrl);
-      res.then(function(result) {
-        console.log('successfully fetched recipes');
-        console.log(result); // "it worked!"
-      }, function(err) {
-        console.log('failure');
-        console.log(err); // Error: "It broke"
+        var res = reqHandler.get(fullUrl);
+        res.then(function(result) {
+          resolve(result);
+        }, function(err) {
+          reject(err);
+        });
       });
     };
 
     module.getRecipe = function (recipeID) {
-        if (!recipeID || !recipeID.length) { return; }
+      return new Promise(function(resolve, reject) {
+        if (!recipeID || !recipeID.length) {
+          reject({
+            'response': 'missing recipe ID!',
+            'code': 400
+          });
+        }
 
         // https://api.yummly.com/v1/api/recipe
-        var url = module.urls.base + module.urls.getRecipe;
+        var url = internals.urls.base + internals.urls.getRecipe;
         var fullUrl = url + recipeID
 
         var res = reqHandler.get(fullUrl);
         res.then(function(result) {
-          console.log('successfully fetched recipe info');
-          console.log(result);
+          resolve(result);
         }, function(err) {
-          console.log('failure');
-          console.log(err);
+          reject(err);
         });
+      });
+    };
+
+    module.getMetadataTypes = function () {
+      return internals.metadataKeys;
     };
 
     module.getMetadata = function (dataType) {
-      if (!dataType || !dataType.length) { return; }
+      return new Promise(function(resolve, reject) {
+        if (!dataType || !dataType.length) {
+          reject({
+            'response': 'invalid metadata type!',
+            'code': 400
+          });
+        }
 
-      // https://api.yummly.com/v1/api/metadata
-      var url = module.urls.base + module.urls.getMetadata;
-      var fullUrl = url + dataType + module.authParams;
-      console.log(fullUrl);
-      var res = reqHandler.get(fullUrl, {}, 'jsonp');
-      res.then(function(result) {
-        console.log('successfully fetched metadata info');
-        console.log(result);
-      }, function(err) {
-        console.log('failure');
-        console.log(err);
+        // https://api.yummly.com/v1/api/metadata
+        var url = internals.urls.base + internals.urls.getMetadata;
+        var fullUrl = url + dataType + internals.authParams;
+        var res = reqHandler.get(fullUrl, {}, 'jsonp');
+        res.then(function(result) {
+          resolve(result);
+        }, function(err) {
+          reject(err);
+        });
       });
     };
 
@@ -103,7 +132,6 @@ function APIInterface(reqHandler, userParams = {}) {
 
 // once jsonp call is complete for getMetadata, this will be called.
 function set_metadata (dataType, data) {
-    console.log('setting metadata in APIInterface');
     hrh.jsonpResult = {
       'type': dataType,
       'data': data
