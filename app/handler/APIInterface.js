@@ -12,17 +12,28 @@ function APIInterface(reqHandler, userParams = {}) {
       },
       authParams: '?_app_id=9cce27e7&_app_key=b13c741344519e5f89cb0edb7e8043f6',
       metadataKeys: [
-          'ingredient',
-          'diet',
-          'allergy',
-          'cuisine',
-          'course',
-          'holiday',
+        'ingredient',
+        'diet',
+        'allergy',
+        'cuisine',
+        'course',
+        'holiday',
       ],
+      appParams: {
+        'allowedIngredient[]': { 'metadataType': 'ingredient' },
+        'excludedIngredient[]': { 'metadataType': 'ingredient' }
+        // fill in the rest of the parameters from
+        // https://developer.yummly.com/documentation
+        // in the "Parameters" section
+      },
       defaultParams: {
         requirePictures: 'true'
       },
       userParams: userParams
+    };
+
+    module.getAppParams = function () {
+      return internals.appParams;
     };
 
     // returns query parameters [?q=onion+soup&requirePictures=true]
@@ -31,18 +42,28 @@ function APIInterface(reqHandler, userParams = {}) {
     module.buildQueryParams = function (searchText, requestParams={}) {
       var queryParams = '?';
       // &q=onion+soup
-      // replace all instances of spaces with +
-      searchText = searchText.replace(/\s+/g, "+");
       queryParams += 'q=' + searchText;
 
       var addParams = function (q, params) {
         for (var param in params) {
           if(params[param].length) {
-            q += '&' + param + '=' + params[param];
+            var paramVal = params[param];
+            // if params[param] == ['beef', 'tomato'],
+            // where param might be "includeIngredient[]"
+            if (paramVal.constructor === Array) {
+              for (var item in paramVal) {
+                if (paramVal[item].length) {
+                  q += '&' + param + '=' + paramVal[item];
+                }
+              }
+            } else {
+              q += '&' + param + '=' + paramVal;
+            }
           }
         }
 
-        return q;
+        // replace all instances of spaces with +
+        return q.replace(/\s+/g, "+");
       }
 
       // Add this request's params
