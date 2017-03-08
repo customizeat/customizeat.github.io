@@ -28,13 +28,14 @@ a:hover, a:active {
 }
 
 .mainheader img {
-  width: 30%;
+  display: block;
+  width: 40%;
   height: auto;
-  margin: 2% 0;
+  margin: 10px auto 10px;
 }
 
 .mainheader nav {
-  background-color: #666;
+  background-color: #000; /* Nav color */
   height: 40px;
   border-radius: 5px;
   -moz-border-radius: 5px; /* Mozilla */
@@ -75,6 +76,25 @@ a:hover, a:active {
   border-radius: 5px;
   -moz-border-radius: 5px; /* Mozilla */
   -webkit-border-radius: 5px; /*  */
+}
+
+.mainContent #stars > span {
+  display: inline-block;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.mainContent #stars:hover > span:before {
+  content: '\2605';
+  position: absolute;
+}
+
+.mainContent #stars > span:hover ~ span::before {
+  content: '';
+}
+
+.mainContent aa {
+  font-size: 12px;
 }
 
 .content {
