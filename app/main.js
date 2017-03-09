@@ -14,10 +14,6 @@ res.then(function(result) {
   //console.log(err); // Error: "It broke"
 });
 
-// this should show pre compiled templates.
-console.log(Handlebars.templates);
-console.log(Handlebars.templates['carousels_item.hbs']);
-
 // read from pre compiled template to build html.
 // reading from templates/carousels/carousels_item.tpl.js
 var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
@@ -27,9 +23,8 @@ var json = {
     name: 'foodName',
     description: 'foodDescription'
 };
-var carouselsItemDiv = carouselsItemTpl({json: json});
-console.log(carouselsItemDiv);
 
+var carouselsItemDiv = carouselsItemTpl({json: json});
 // compile handlebars template on the fly
 var json2 = {
     url: 'static/dimsum.jpg',
@@ -37,6 +32,7 @@ var json2 = {
     name: 'Dim Sum',
     description: 'Dim Sum is traditionally served during lunch'
 };
+
 var tplOnTheFly = '<div class="item">' +
   '<img src="{{json.url}}" alt="{{json.alt_name}}">' +
   '<div class="carousel-caption">' +
@@ -45,7 +41,6 @@ var tplOnTheFly = '<div class="item">' +
   '</div>' +
 '</div>';
 var tplCompiled = Handlebars.compile(tplOnTheFly);
-console.log(tplCompiled);
 var tplBuilt = tplCompiled({json: json2});
 
 // carousel3
@@ -59,7 +54,6 @@ var json3 = {
 var carouselsItemDiv3 = carouselsItemTpl({json: json3});
 
 //carousel4
-
 var json4 = {
   url: 'http://www.vancitybuzz.com/wp-content/uploads/2015/01/salmon-maki-vancouver-900x500.jpg',
   alt_name: 'altImg',
@@ -91,12 +85,7 @@ $(document).ready(function() {
   */
 });
 
-
-console.log(Handlebars.templates);
-console.log(Handlebars.templates['imageTemplates.hbs']);
-
-
-var basicItemTpl = Handlebars.templates['imageTemplates.hbs'];
+var basicItemTpl = Handlebars.templates['image.tpl.hbs'];
 
 var basicImg1 = {
   url: 'http://bbqworld.org/wp-content/uploads/2016/05/28-day-Dry-Aged-Sirloin11.jpg',
@@ -107,10 +96,7 @@ var basicImg1 = {
   description: 'foodDescription'
 };
 
-
 var basicItemDiv1 = basicItemTpl({json: basicImg1});
-console.log(basicItemDiv1);
-
 
 // replace the contents when the button is clicked
 function replaceCarousel1() {
@@ -124,11 +110,5 @@ function replaceCarousel1() {
 }
 
 $(document).ready(function() {
-  // uncomment to replace as soon as document loads.
-  /*
-  $('div.carousel-inner').html('');
-  $('div.carousel-inner').append(carouselsItemDiv);
-  $('div.carousel-inner').append(tplBuilt);
-  $('div.carousel-inner').children().first().addClass('active');
-  */
+
 });
