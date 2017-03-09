@@ -21,7 +21,7 @@ a:hover, a:active {
 }
 
 .body {
-  background-color: #D3D3D3;
+  background-color: #FAFAFA;
   margin: 0 auto;
   width: 70%;
   clear: both;
@@ -35,7 +35,7 @@ a:hover, a:active {
 }
 
 .mainheader nav {
-  background-color: #000; /* Nav color */
+  background-color: #FCA08D; /* Nav color */
   height: 40px;
   border-radius: 5px;
   -moz-border-radius: 5px; /* Mozilla */
