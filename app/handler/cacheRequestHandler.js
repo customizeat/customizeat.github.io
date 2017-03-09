@@ -25,7 +25,7 @@ function CacheRequestHandler() {
         var timeStamp = Date.now();
         var datatoWrite = {
           timestamp: timeStamp,
-          data: cacheValue
+          data: responseText;
         };
 
         localStorage.setItem("cache::" + url, JSON.stringify(datatoWrite));
