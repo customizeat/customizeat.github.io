@@ -45,6 +45,7 @@ body, h1, h2, h3, h4, p, blockquote, pre{
 
 .well-white {
   background-color: #fff !important;
+  margin-bottom: auto;
 }
 .navbar{
  letter-spacing: 0.15em;
