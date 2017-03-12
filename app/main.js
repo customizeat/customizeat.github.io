@@ -3,7 +3,11 @@ var hrh = HttpRequestHandler();
 var reqHandler = RequestHandler(hrh, crh);
 var api = APIInterface(reqHandler, {});
 
+var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
+var searchResultTpl = Handlebars.templates['image.tpl.hbs'];
+
 $(document).ready(function() {
+  replaceCarousel();
   $('#recipeSearchForm').submit(function (event) {
     event.preventDefault();
 
@@ -24,24 +28,29 @@ $(document).ready(function() {
     var resPromise = api.searchRecipes(searchQuery);
     resPromise.then(function(result) {
       console.log('res');
-      console.log(result);
+      console.log(result.response.matches);
+      $('#recipeResults').html('');
+      var matches = result.response.matches;
+      var recipe;
+      for (var idx = 0; idx < matches.length; idx++) {
+          recipe = matches[idx];
+          var minutes = recipe.totalTimeInSeconds % 60;
+          var recipeJSON = {
+              url: recipe.imageUrlsBySize['90'],
+              alt_name: recipe.recipeName,
+              hoverDescription: 'hoverDescription',
+              cookTime: minutes + ' Min.',
+              name: recipe.recipeName,
+              description: 'description here'
+          };
+          var recipeResultDiv = searchResultTpl({json: recipeJSON});
+          $('#recipeResults').append(recipeResultDiv);
+      }
     }, function(err) {
       //err
     });
   });
 });
-
-var metadataPromise = api.getMetadata('allergy');
-metadataPromise.then(function(result) {
-  console.log('metadata');
-  console.log(result);
-}, function(err) {
-  //err
-});
-
-var requestArgs = {'includeIngredient[]': ['beef', 'cognac', 'onion soup mix']};
-var queryParams = api.buildQueryParams('onion soup', requestArgs);
-console.log(queryParams);
 
 // read from pre compiled template to build html.
 // reading from templates/carousels/carousels_item.tpl.js
@@ -62,22 +71,18 @@ function replaceCarousel() {
   $('#recommendation').children().first().addClass('active');
 }
 
-var basicItemTpl = Handlebars.templates['image.tpl.hbs'];
+/*
+var metadataPromise = api.getMetadata('allergy');
+metadataPromise.then(function(result) {
+  console.log('metadata');
+  console.log(result);
+}, function(err) {
+  //err
+});
+*/
 
-var basicImg1 = {
-  url: 'http://bbqworld.org/wp-content/uploads/2016/05/28-day-Dry-Aged-Sirloin11.jpg',
-  alt_name: 'altImg',
-  hoverDescription: 'Very Declious',
-  cookTime: '300 Min.',
-  name: 'foodName',
-  description: 'foodDescription'
-};
-
-var basicItemDiv1 = basicItemTpl({json: basicImg1});
-
-// replace the contents when the button is clicked
-function replaceCarousel1() {
-  $('#recipeResults').html('');
-  $('#recipeResults').append(basicItemDiv1);
-  $('#recipeResults').children().first().addClass('active');
-}
+/*
+var requestArgs = {'includeIngredient[]': ['beef', 'cognac', 'onion soup mix']};
+var queryParams = api.buildQueryParams('onion soup', requestArgs);
+console.log(queryParams);
+*/

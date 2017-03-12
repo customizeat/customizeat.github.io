@@ -168,32 +168,19 @@
 <div class="container text-center" style="background-color: #ffffff;">
 <div>
   <h3>Daily Best</h3>
-  <a class='btn btn-primary' onclick='replaceCarousel();'>Replace with handlebars data</a><br>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+  </ol>
 
-<p>
-
-
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-      <li data-target="#myCarousel" data-slide-to="3"></li>
-      <li data-target="#myCarousel" data-slide-to="4"></li>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div id="recommendation" class="carousel-inner" role="listbox">
-      <!-- templates/carousels/carousels_item.js -->
-    </div>
+  <!-- Wrapper for slides -->
+  <div id="recommendation" class="carousel-inner" role="listbox">
+    <!-- templates/carousels/carousels_item.js -->
   </div>
-</p>
+</div>
 
-
-<a class='btn btn-primary' onclick='replaceCarousel1();'>Replace with handlebars data</a><br>
-
-<p></p>
 
   <div id="howSort" class="w3-section w3-bottombar w3-padding-10">
       <span class="w3-margin-right">Sort by</span>
