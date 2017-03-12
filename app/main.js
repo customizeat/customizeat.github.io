@@ -4,7 +4,7 @@ var reqHandler = RequestHandler(hrh, crh);
 var api = APIInterface(reqHandler, {});
 
 var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
-var searchResultTpl = Handlebars.templates['image.tpl.hbs'];
+var searchResultTpl = Handlebars.templates['searchResult.hbs'];
 
 $(document).ready(function() {
   replaceCarousel();
@@ -27,7 +27,6 @@ $(document).ready(function() {
 
     var resPromise = api.searchRecipes(searchQuery);
     resPromise.then(function(result) {
-      console.log('res');
       console.log(result.response.matches);
       $('#recipeResults').html('');
       var matches = result.response.matches;
@@ -35,8 +34,10 @@ $(document).ready(function() {
       for (var idx = 0; idx < matches.length; idx++) {
           recipe = matches[idx];
           var minutes = recipe.totalTimeInSeconds % 60;
+          var imageURL = recipe.imageUrlsBySize['90'];
+          imageURL = imageURL.replace('=s90-c', '=s200-c');
           var recipeJSON = {
-              url: recipe.imageUrlsBySize['90'],
+              url: imageURL,
               alt_name: recipe.recipeName,
               hoverDescription: 'hoverDescription',
               cookTime: minutes + ' Min.',
