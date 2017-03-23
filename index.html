@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="static/js/jquery.min.js"></script>
   <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/bootstrap-tagsinput.js"></script>
+  <script src="static/js/boot1.js"></script>
   <script src="static/js/handlebars-v4.0.5.js"></script>
   <script id="entry-template" src="templates/carousels/carousels_item.tpl.js"></script>
   <script id="entry-template" src="templates/BasicImages/image.tpl.js"></script>
@@ -15,6 +17,8 @@
   <script src="app/handler/APIInterface.js"></script>
   <script src="app/main.js"></script>
   <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/bootstrap-tagsinput.css">
+  <link rel="stylesheet" href="static/css/boot1.css">
   <link rel="stylesheet" href="static/css/override.css">
 </head>
 
@@ -104,11 +108,11 @@
             <!-- input group for large devices -->
             <div class="well well-white well-sm hidden-sm hidden-xs">
               <div class="input-group">
-                <input type="text" class="form-control" id="includeIngredientsLG" placeholder="Include ingredients">
+                <input type="text" class="form-control" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" id="includeIngredientsLG" placeholder="Include ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
-                <input type="text" class="form-control" id="excludeIngredientsLG" placeholder="Exclude ingredients" style="margin-left: 3px;">
+                <input type="text" class="form-control" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" id="excludeIngredientsLG" placeholder="Exclude ingredients" style="margin-left: 3px;">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-minus"></span>
                 </span>
@@ -118,12 +122,12 @@
             <!-- input group for small devices -->
             <div class="well well-white well-sm hidden-md hidden-lg">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" id="includeIngredientsSM" placeholder="Include ingredients">
+                <input type="text" class="form-control" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" id="includeIngredientsSM" placeholder="Include ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
               </div>
-              <div class="input-group input-group-sm" id="excludeIngredientsSM" style="margin-top: 3px;">
+              <div class="input-group input-group-sm" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" id="excludeIngredientsSM" style="margin-top: 3px;">
                 <input type="text" class="form-control" placeholder="Exclude ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-minus"></span>
@@ -134,7 +138,7 @@
             <!-- input group for large devices -->
             <div class="well well-white well-sm hidden-sm hidden-xs">
               <div class="input-group">
-                <input type="text" class="form-control" id="allergyLG" placeholder="Allergy">
+                <input type="text" class="form-control" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" id="allergyLG" placeholder="Allergy">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
@@ -144,7 +148,7 @@
             <!-- input group for large devices -->
             <div class="well well-white well-sm hidden-sm hidden-xs">
               <div class="input-group">
-                <input type="text" class="form-control" id="dietLG" placeholder="Diet">
+                <input type="text" class="form-control" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput"id="dietLG" placeholder="Diet">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
@@ -154,7 +158,7 @@
             <!-- input group for small devices -->
             <div class="well well-white well-sm hidden-md hidden-lg">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" id="allergySM" placeholder="Allergy">
+                <input type="text" class="form-control" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput" id="allergySM" placeholder="Allergy">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
