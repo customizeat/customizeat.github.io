@@ -12,6 +12,7 @@
   <script src="app/handler/httpRequestHandler.js"></script>
   <script src="app/handler/cacheRequestHandler.js"></script>
   <script src="app/handler/requestHandler.js"></script>
+  <script src="app/handler/APIInterface.js"></script>
   <script src="app/main.js"></script>
   <link rel="stylesheet" href="static/css/bootstrap.min.css">
   <link rel="stylesheet" href="static/css/override.css">
@@ -67,7 +68,7 @@
 <div class="jumbotron">
   <div class="container text-center">
       <h2>&nbsp;</h2>
-      <form>
+      <form id="recipeSearchForm">
         <div class="col-md-8 col-md-offset-2">
           <!-- form for laptops and desktops -->
           <div class="input-group input-group-lg hidden-xs hidden-sm">
@@ -78,9 +79,9 @@
                 </span>
               </a>
             </span>
-            <input type="text" class="form-control" placeholder="Find a recipe!">
+            <input type="text" class="form-control searchQuery" id="searchQueryLG" placeholder="Find a recipe">
             <span class="input-group-btn">
-              <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+              <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
             </span>
           </div>
 
@@ -93,9 +94,9 @@
                 </span>
               </a>
             </span>
-            <input type="text" class="form-control" placeholder="Find a Recipe">
+            <input type="text" class="form-control searchQuery" id="searchQuerySM" placeholder="Find a Recipe">
             <span class="input-group-btn">
-              <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+              <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
             </span>
           </div>
 
@@ -103,11 +104,11 @@
             <!-- input group for large devices -->
             <div class="well well-white well-sm hidden-sm hidden-xs">
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Include ingredients">
+                <input type="text" class="form-control" id="includeIngredientsLG" placeholder="Include ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
-                <input type="text" class="form-control" placeholder="Exclude ingredients" style="margin-left: 3px;">
+                <input type="text" class="form-control" id="excludeIngredientsLG" placeholder="Exclude ingredients" style="margin-left: 3px;">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-minus"></span>
                 </span>
@@ -117,15 +118,45 @@
             <!-- input group for small devices -->
             <div class="well well-white well-sm hidden-md hidden-lg">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" placeholder="Include ingredients">
+                <input type="text" class="form-control" id="includeIngredientsSM" placeholder="Include ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
               </div>
-              <div class="input-group input-group-sm" style="margin-top: 3px;">
+              <div class="input-group input-group-sm" id="excludeIngredientsSM" style="margin-top: 3px;">
                 <input type="text" class="form-control" placeholder="Exclude ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-minus"></span>
+                </span>
+              </div>
+            </div>
+
+            <!-- input group for large devices -->
+            <div class="well well-white well-sm hidden-sm hidden-xs">
+              <div class="input-group">
+                <input type="text" class="form-control" id="allergyLG" placeholder="Allergy">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </span>
+              </div>
+            </div>
+
+            <!-- input group for large devices -->
+            <div class="well well-white well-sm hidden-sm hidden-xs">
+              <div class="input-group">
+                <input type="text" class="form-control" id="dietLG" placeholder="Diet">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </span>
+              </div>
+            </div>
+
+            <!-- input group for small devices -->
+            <div class="well well-white well-sm hidden-md hidden-lg">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" id="allergySM" placeholder="Allergy">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-plus"></span>
                 </span>
               </div>
             </div>
