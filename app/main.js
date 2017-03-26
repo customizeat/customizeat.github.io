@@ -66,18 +66,28 @@ function displayResult (result, searchQuery) {
 
     var matches = result.response.matches;
     var recipe;
+    function secondsToHM(d) {
+        d = Number(d);
+        var h = Math.floor(d / 3600);
+        var m = Math.floor(d % 3600 / 60);
+
+        var hDisplay = h > 0 ? h + " Hr " : "";
+        var mDisplay = m > 0 ? m + " Min " : "";
+        return hDisplay + mDisplay;
+    }
+
     for (var idx = 0; idx < matches.length; idx++) {
         recipe = matches[idx];
-        var minutes = recipe.totalTimeInSeconds % 60;
         var imageURL = recipe.imageUrlsBySize['90'];
         imageURL = imageURL.replace('=s90-c', '=s200-c');
+        var hm = secondsToHM(recipe.totalTimeInSeconds);
         var recipeJSON = {
+            recipeID: recipe.id,
             url: imageURL,
             alt_name: recipe.recipeName,
-            hoverDescription: 'hoverDescription',
-            cookTime: minutes + ' Min.',
+            cookTime: hm,
             name: recipe.recipeName,
-            description: 'description here'
+            source: recipe.sourceDisplayName
         };
         var recipeResultDiv = searchResultTpl({json: recipeJSON});
         $('#recipeResults').append(recipeResultDiv);

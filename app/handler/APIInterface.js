@@ -28,7 +28,7 @@ function APIInterface(reqHandler, userParams = {}) {
       },
       defaultParams: {
         requirePictures: 'true',
-        maxResult: '20'
+        maxResult: '30'
       },
       userParams: userParams
     };
