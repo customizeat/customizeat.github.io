@@ -6,7 +6,92 @@ var api = APIInterface(reqHandler, {});
 var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
 var searchResultTpl = Handlebars.templates['searchResult.hbs'];
 
+var lastSearch = {
+    searchQuery: '',
+    start: 0,
+    result: {}
+};
+
+function searchNext (searchQuery) {
+    // if both are empty, then return!
+    if (!searchQuery.length && !lastSearch.searchQuery.length) {
+        return;
+    }
+
+    // this is the case for manual load more button clicking.
+    if (!searchQuery.length) {
+        searchQuery = lastSearch.searchQuery;
+    }
+
+    // calculate start for the next api call,
+    // returns -1 if start cannot be incremented any more (max count reached)
+    var getNextStart = function (searchQuery, lastResult) {
+        // case 1, searchQuery is different!
+        if (searchQuery !== lastSearch.searchQuery) {
+            return 0;
+        }
+        else if (lastSearch.start >= lastResult.response.totalMatchCount - 1) {
+            // case 2 max count reached
+            return -1;
+        } else {
+            // case 3 usual increment
+            return lastSearch.start + lastResult.response.matches.length;
+        }
+    };
+
+    var nextStart = getNextStart(searchQuery, lastSearch.result);
+    if (nextStart === 0) {
+        //$('#resultsPanel').hide();
+    }
+    var resPromise = api.searchRecipes(searchQuery, { start: nextStart});
+    resPromise.then(function(result) {
+        displayResult(result, searchQuery);
+        lastSearch.start += nextStart;
+        lastSearch.searchQuery = searchQuery;
+        lastSearch.result = result;
+    }, function(err) {
+      //err
+    });
+}
+
+function displayResult (result, searchQuery) {
+    var totalMatchCount = result.response.totalMatchCount;
+    if (lastSearch.searchQuery != searchQuery) {
+        var panelTitle = '<u>' + totalMatchCount + '</u> <em>recipe results for</em> &quot;<mark>'
+                                  + searchQuery + '</mark>&quot';
+        $('#resultsTitle').html(panelTitle);
+        $('#recipeResults').html('');
+        $('#resultsPanel').show();
+    }
+
+    var matches = result.response.matches;
+    var recipe;
+    for (var idx = 0; idx < matches.length; idx++) {
+        recipe = matches[idx];
+        var minutes = recipe.totalTimeInSeconds % 60;
+        var imageURL = recipe.imageUrlsBySize['90'];
+        imageURL = imageURL.replace('=s90-c', '=s200-c');
+        var recipeJSON = {
+            url: imageURL,
+            alt_name: recipe.recipeName,
+            hoverDescription: 'hoverDescription',
+            cookTime: minutes + ' Min.',
+            name: recipe.recipeName,
+            description: 'description here'
+        };
+        var recipeResultDiv = searchResultTpl({json: recipeJSON});
+        $('#recipeResults').append(recipeResultDiv);
+    }
+
+    if (lastSearch.start + matches.length >= result.response.totalMatchCount) {
+        $('#loadMoreBtn').hide();
+    } else {
+        $('#loadMoreBtn').show();
+    }
+}
+
 $(document).ready(function() {
+  $('#resultsPanel').hide();
   replaceCarousel();
   $('#recipeSearchForm').submit(function (event) {
     event.preventDefault();
@@ -25,31 +110,7 @@ $(document).ready(function() {
     };
     */
 
-    var resPromise = api.searchRecipes(searchQuery);
-    resPromise.then(function(result) {
-      console.log(result.response.matches);
-      $('#recipeResults').html('');
-      var matches = result.response.matches;
-      var recipe;
-      for (var idx = 0; idx < matches.length; idx++) {
-          recipe = matches[idx];
-          var minutes = recipe.totalTimeInSeconds % 60;
-          var imageURL = recipe.imageUrlsBySize['90'];
-          imageURL = imageURL.replace('=s90-c', '=s200-c');
-          var recipeJSON = {
-              url: imageURL,
-              alt_name: recipe.recipeName,
-              hoverDescription: 'hoverDescription',
-              cookTime: minutes + ' Min.',
-              name: recipe.recipeName,
-              description: 'description here'
-          };
-          var recipeResultDiv = searchResultTpl({json: recipeJSON});
-          $('#recipeResults').append(recipeResultDiv);
-      }
-    }, function(err) {
-      //err
-    });
+    searchNext(searchQuery);
   });
 });
 
