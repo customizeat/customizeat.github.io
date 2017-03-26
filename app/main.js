@@ -43,14 +43,18 @@ function searchNext (searchQuery) {
     if (nextStart === 0) {
         //$('#resultsPanel').hide();
     }
+
+    $('#loadingModal').modal('show');
     var resPromise = api.searchRecipes(searchQuery, { start: nextStart});
     resPromise.then(function(result) {
         displayResult(result, searchQuery);
         lastSearch.start += nextStart;
         lastSearch.searchQuery = searchQuery;
         lastSearch.result = result;
+        $('#loadingModal').modal('hide');
     }, function(err) {
       //err
+        $('#loadingModal').modal('hide');
     });
 }
 
@@ -101,7 +105,6 @@ function displayResult (result, searchQuery) {
 }
 
 $(document).ready(function() {
-  $('#resultsPanel').hide();
   replaceCarousel();
   $('#recipeSearchForm').submit(function (event) {
     event.preventDefault();
