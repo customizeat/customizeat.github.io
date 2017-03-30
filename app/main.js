@@ -40,8 +40,8 @@ function searchNext (searchQuery) {
     };
 
     var nextStart = getNextStart(searchQuery, lastSearch.result);
-    if (nextStart === 0) {
-        //$('#resultsPanel').hide();
+    if (nextStart === -1) {
+        return; // exit early here, we do not need to query!
     }
 
     $('#loadingModal').modal('show');
@@ -97,7 +97,7 @@ function displayResult (result, searchQuery) {
         $('#recipeResults').append(recipeResultDiv);
     }
 
-    if (lastSearch.start + matches.length >= result.response.totalMatchCount) {
+    if (lastSearch.start + matches.length >= result.response.totalMatchCount - 1) {
         $('#loadMoreBtn').hide();
     } else {
         $('#loadMoreBtn').show();
