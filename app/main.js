@@ -58,6 +58,14 @@ function searchNext (searchQuery) {
     });
 }
 
+function resizeSearchResults() {
+    var maxHeight = 0;
+    $('#recipeResults').children().each(function () {
+        maxHeight = $(this).height() >= maxHeight ? $(this).height() : maxHeight;
+    });
+    $('#recipeResults').children().css('height', maxHeight);
+}
+
 function displayResult (result, searchQuery) {
     var totalMatchCount = result.response.totalMatchCount;
     if (lastSearch.searchQuery != searchQuery) {
@@ -80,6 +88,7 @@ function displayResult (result, searchQuery) {
         return hDisplay + mDisplay;
     }
 
+    var imagesToLoad = matches.length || 0;
     for (var idx = 0; idx < matches.length; idx++) {
         recipe = matches[idx];
         var imageURL = recipe.imageUrlsBySize['90'];
@@ -95,6 +104,14 @@ function displayResult (result, searchQuery) {
         };
         var recipeResultDiv = searchResultTpl({json: recipeJSON});
         $('#recipeResults').append(recipeResultDiv);
+        var $img = $('#recipeResults div.thumbnail[recipeId="' + recipe.id + '"] img');
+        img = $img.get(0);
+        img.onload = function () {
+            imagesToLoad--;
+            if (imagesToLoad === 0) {
+                resizeSearchResults();
+            }
+        };
     }
 
     if (lastSearch.start + matches.length >= result.response.totalMatchCount - 1) {
