@@ -18,8 +18,9 @@ function searchNext (searchQuery) {
         return;
     }
 
-    // this is the case for manual load more button clicking.
-    if (!searchQuery.length) {
+    if (searchQuery.length) { // new query coming from the form input
+        lastSearch.searchQuery = '';
+    } else { // this is the case for manual load more button clicking.
         searchQuery = lastSearch.searchQuery;
     }
 
