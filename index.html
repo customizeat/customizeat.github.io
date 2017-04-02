@@ -10,7 +10,7 @@
   <script src="static/js/bootstrap-tagsinput.js"></script>
   <script src="static/js/handlebars-v4.0.5.js"></script>
   <script id="entry-template" src="templates/carousels/carousels_item.tpl.js"></script>
-  <script id="entry-template" src="templates/BasicImages/image.tpl.js"></script>
+  <script id="entry-template" src="templates/searchResults/searchResult.tpl.js"></script>
   <script src="app/handler/httpRequestHandler.js"></script>
   <script src="app/handler/cacheRequestHandler.js"></script>
   <script src="app/handler/requestHandler.js"></script>
@@ -180,32 +180,19 @@
 <div class="container text-center" style="background-color: #ffffff;">
 <div>
   <h3>Daily Best</h3>
-  <a class='btn btn-primary' onclick='replaceCarousel();'>Replace with handlebars data</a><br>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+  </ol>
 
-<p>
-
-
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-      <li data-target="#myCarousel" data-slide-to="3"></li>
-      <li data-target="#myCarousel" data-slide-to="4"></li>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div id="recommendation" class="carousel-inner" role="listbox">
-      <!-- templates/carousels/carousels_item.js -->
-    </div>
+  <!-- Wrapper for slides -->
+  <div id="recommendation" class="carousel-inner" role="listbox">
+    <!-- templates/carousels/carousels_item.js -->
   </div>
-</p>
+</div>
 
-
-<a class='btn btn-primary' onclick='replaceCarousel1();'>Replace with handlebars data</a><br>
-
-<p></p>
 
   <div id="howSort" class="w3-section w3-bottombar w3-padding-10">
       <span class="w3-margin-right">Sort by</span>
@@ -214,12 +201,42 @@
       <button class="w3-btn w3-white w3-hide-small"><i class="fa fa-exclamation w3-margin-right"></i>Time</button>
   </div>
 
-  <div id="recipeResults" class="row">
-    <!-- templates/BasicImages/imageTemplates.js -->
+  <br/>
+
+  <div class="panel panel-default" id="resultsPanel" style="display: none;">
+    <div class="panel-heading">
+      <h3 class="panel-title" id="resultsTitle"></h3>
+    </div>
+    <div class="panel-body">
+      <div id="recipeResults" class="row">
+        <!-- templates/BasicImages/imageTemplates.js -->
+      </div>
+      <div class="row">
+          <button class="btn btn-default"
+            id="loadMoreBtn"
+            style="display: none;"
+            searchQuery=""
+            onclick="searchNext('');">
+            Load More
+          </button>
+      </div>
+    </div>
   </div>
+  <br/>
 
 </div>
 </div><!-- div class well-->
+
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p class="text-center">loading...</p>
+        <img class="img-responsive img-rounded center-block" src="static/loading_icon.gif" />
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 </body>
 <footer id="bottomFooter" class="container-fluid text-center" style="background-color: #161616;">

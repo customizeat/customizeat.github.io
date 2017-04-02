@@ -81,6 +81,7 @@ background: #FCA08D;
 .hovereffect {
   width: 100%;
   height: 100%;
+  padding: 13px;
   float: left;
   overflow: hidden;
   position: relative;

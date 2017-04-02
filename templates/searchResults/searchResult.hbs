@@ -1,0 +1,21 @@
+<div class="col-sm-6 col-md-4">
+  <div class="thumbnail" recipeId={{json.recipeID}}>
+    <div class="hovereffect">
+        <img class="img-responsive center-block" src="{{json.url}}" alt="{{json.alt_name}}">
+        <div class="overlay">
+           <h3>Cook Time: {{json.cookTime}}</h3>
+           <a class="info" href="#{{json.recipeID}}">
+              Open recipe&nbsp;<span class="glyphicon glyphicon-new-window"></span>
+           </a>
+        </div>
+    </div>
+    <div class="caption">
+      <p style="font-size: 1pt;">&nbsp;</p>
+      <h5>{{json.name}}</h5>
+      <p>Source: {{json.source}}</p>
+      <p><button type="button" class="btn btn-default btn-sm" aria-label="Left Align">
+        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Save
+        </button></p>
+    </div>
+  </div>
+</div>
