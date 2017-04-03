@@ -48,6 +48,7 @@ function searchNext (searchQuery) {
     $('#loadingModal').modal('show');
     var resPromise = api.searchRecipes(searchQuery, { start: nextStart});
     resPromise.then(function(result) {
+        console.log(result);
         displayResult(result, searchQuery);
         lastSearch.start += nextStart;
         lastSearch.searchQuery = searchQuery;
@@ -123,6 +124,7 @@ function displayResult (result, searchQuery) {
 }
 
 $(document).ready(function() {
+  enableTagsinput();
   replaceCarousel();
   $('#recipeSearchForm').submit(function (event) {
     event.preventDefault();
@@ -131,15 +133,6 @@ $(document).ready(function() {
     // so we must use first() to wrap it as a jquery element.
     var $visibleSearchBox = $('.searchQuery:visible').first();
     var searchQuery = $visibleSearchBox.val();
-    /*
-    var displaySize = $visibleSearchBox.attr('id') === 'searchQueryLG' ? 'LG' : 'SM';
-    var includeIngredients = $('#includeIngredients' + displaySize).val() || '';
-    var excludeIngredients = $('#excludeIngredients' + displaySize).val() || '';
-    var requestParams = {
-      'allowedIngredient[]': [includeIngredients], // this must be a list
-      'excludeIngredients[]': [excludeIngredients] // this must be a list
-    };
-    */
 
     searchNext(searchQuery);
   });
@@ -164,18 +157,53 @@ function replaceCarousel() {
   $('#recommendation').children().first().addClass('active');
 }
 
-/*
-var metadataPromise = api.getMetadata('allergy');
-metadataPromise.then(function(result) {
-  console.log('metadata');
-  console.log(result);
-}, function(err) {
-  //err
-});
-*/
+function parseSearchFilter() {
+    var searchFilters = {};
+    var parseFromLargeView = $('#searchQueryLG').is(':visible');
+    var filtersClass = parseFromLargeView ? 'search-filters-lg' : 'search-filters-sm';
+    $('#searchFilters .' + filtersClass).each(function () {
+        var filterItems = $(this).tagsinput('items');
+        var paramKey = $(this).attr('paramKey');
+        searchFilters[paramKey] = filterItems;
+    });
 
-/*
-var requestArgs = {'includeIngredient[]': ['beef', 'cognac', 'onion soup mix']};
-var queryParams = api.buildQueryParams('onion soup', requestArgs);
-console.log(queryParams);
-*/
+    return searchFilters;
+}
+
+function enableTagsinput() {
+    var parseFromLargeView = $('#searchQueryLG').is(':visible');
+    var filtersClass = parseFromLargeView ? 'search-filters-lg' : 'search-filters-sm';
+    var appParams = api.getAppParams();
+    $('#searchFilters .' + filtersClass).each(function () {
+        var $filterInput = $(this);
+        var paramKey = $filterInput.attr('paramKey');
+        var metadataType = appParams[paramKey].metadataType;
+        var metadataPromise = api.getMetadata(metadataType);
+        metadataPromise.then(function(result) {
+          var metadataArr = [];
+          for (var item in result.response) {
+              var metadataObj = result.response[item];
+              metadataObj.description = metadataObj.shortDescription || metadataObj.description;
+              metadataArr.push(metadataObj);
+          }
+
+          var searchFilter = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.obj.whitespace('description'),
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              local: metadataArr
+          });
+          searchFilter.initialize();
+          $filterInput.tagsinput({
+              itemValue: 'searchValue',
+              itemText: 'description',
+              typeaheadjs: {
+                  name: $filterInput.attr('id'),
+                  displayKey: 'description',
+                  source: searchFilter.ttAdapter()
+              }
+          });
+        }, function(err) {
+          //err
+        });
+    });
+}

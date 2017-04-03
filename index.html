@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="static/js/jquery.min.js"></script>
   <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/typeahead.bundle.js"></script>
   <script src="static/js/bootstrap-tagsinput.js"></script>
   <script src="static/js/handlebars-v4.0.5.js"></script>
   <script id="entry-template" src="templates/carousels/carousels_item.tpl.js"></script>
@@ -76,13 +77,13 @@
           <!-- form for laptops and desktops -->
           <div class="input-group input-group-lg hidden-xs hidden-sm">
             <span class="input-group-btn">
-              <a role="button" data-toggle="collapse" href="#addIngredient" aria-expanded="false" aria-controls="addIngredient" class="btn btn-default">
+              <a role="button" data-toggle="collapse" href="#searchFilters" aria-expanded="false" aria-controls="searchFilters" class="btn btn-default">
                 <span data-toggle="tooltip" data-placement="bottom" title="include / exclude ingredients">
                   <span class="glyphicon glyphicon-plus"></span>/<span class="glyphicon glyphicon-minus"></span>
                 </span>
               </a>
             </span>
-            <input type="text" class="form-control searchQuery" id="searchQueryLG" placeholder="Find a recipe">
+            <input type="text" class="form-control searchQuery typeahead" id="searchQueryLG" placeholder="Find a recipe">
             <span class="input-group-btn">
               <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
             </span>
@@ -91,7 +92,7 @@
           <!-- form for small tablets and phones -->
           <div class="input-group input-group-sm hidden-md hidden-lg">
             <span class="input-group-btn">
-              <a role="button" data-toggle="collapse" href="#addIngredient" aria-expanded="false" aria-controls="addIngredient" class="btn btn-default">
+              <a role="button" data-toggle="collapse" href="#searchFilters" aria-expanded="false" aria-controls="searchFilters" class="btn btn-default">
                 <span data-toggle="tooltip" data-placement="bottom" title="include / exclude ingredients">
                   <span class="glyphicon glyphicon-plus"></span>/<span class="glyphicon glyphicon-minus"></span>
                 </span>
@@ -104,14 +105,16 @@
           </div>
 
           <!-- input group for large devices -->
-          <div id="addIngredient" class="collapse">
+          <div id="searchFilters" class="collapse">
             <div class="well well-white well-sm hidden-sm hidden-xs">
               <div class="input-group">
-                <input type="text" class="form-control" value="" data-role="tagsinput" id="includeIngredientsLG" placeholder="Include ingredients">
+                <input type="text" class="form-control search-filters-lg" value="" paramKey="allowedIngredient[]"
+                        id="includeIngredientsLG" placeholder="Include ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
-                <input type="text" class="form-control" value="" data-role="tagsinput" id="excludeIngredientsLG" placeholder="Exclude ingredients" style="margin-left: 3px;">
+                <input type="text" class="form-control search-filters-lg" value="" paramKey="excludedIngredient[]"
+                        id="excludeIngredientsLG" placeholder="Exclude ingredients" style="margin-left: 3px;">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-minus"></span>
                 </span>
@@ -121,13 +124,15 @@
             <!-- input group for small devices -->
             <div class="well well-white well-sm hidden-md hidden-lg">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" value="" data-role="tagsinput" id="includeIngredientsSM" placeholder="Include ingredients">
+                <input type="text" class="form-control search-filters-sm" value="" paramKey="allowedIngredient[]"
+                        id="includeIngredientsSM" placeholder="Include ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
               </div>
               <div class="input-group input-group-sm" id="excludeIngredientsSM" style="margin-top: 3px;">
-                <input type="text" class="form-control" value="" data-role="tagsinput" id="excludeIngredientsSM" placeholder="Exclude ingredients">
+                <input type="text" class="form-control search-filters-sm" value="" paramKey="excludedIngredient[]"
+                        id="excludeIngredientsSM" placeholder="Exclude ingredients">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-minus"></span>
                 </span>
@@ -137,7 +142,8 @@
             <!-- input group for large devices -->
             <div class="well well-white well-sm hidden-sm hidden-xs">
               <div class="input-group">
-                <input type="text" class="form-control" value="" data-role="tagsinput" id="allergyLG" placeholder="Allergy">
+                <input type="text" class="form-control search-filters-lg" value="" paramKey="allowedAllergy[]"
+                        id="allergyLG" placeholder="Allergy">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
@@ -147,7 +153,8 @@
             <!-- input group for large devices -->
             <div class="well well-white well-sm hidden-sm hidden-xs">
               <div class="input-group">
-                <input type="text" class="form-control" value="" data-role="tagsinput"id="dietLG" placeholder="Diet">
+                <input type="text" class="form-control search-filters-lg" value="" paramKey="allowedDiet[]"
+                        id="dietLG" placeholder="Diet">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
@@ -157,7 +164,8 @@
             <!-- input group for small devices -->
             <div class="well well-white well-sm hidden-md hidden-lg">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" value="" data-role="tagsinput" id="allergySM" placeholder="Allergy">
+                <input type="text" class="form-control search-filters-sm" value="" paramKey="allowedAllergy[]"
+                        id="allergySM" placeholder="Allergy">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
@@ -166,7 +174,8 @@
 
             <div class="well well-white well-sm hidden-md hidden-lg">
               <div class="input-group input-group-sm">
-                <input type="text" class="form-control" value="" data-role="tagsinput" id="dietSM" placeholder="Diet">
+                <input type="text" class="form-control search-filters-sm" value="" paramKey="allowedDiet[]"
+                        id="dietSM" placeholder="Diet">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-plus"></span>
                 </span>
