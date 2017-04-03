@@ -46,7 +46,9 @@ function searchNext (searchQuery) {
     }
 
     $('#loadingModal').modal('show');
-    var resPromise = api.searchRecipes(searchQuery, { start: nextStart});
+    var searchFilters = parseSearchFilter();
+    searchFilters.start = nextStart;
+    var resPromise = api.searchRecipes(searchQuery, searchFilters);
     resPromise.then(function(result) {
         console.log(result);
         displayResult(result, searchQuery);
