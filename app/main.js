@@ -163,8 +163,12 @@ function parseSearchFilter() {
     var filtersClass = parseFromLargeView ? 'search-filters-lg' : 'search-filters-sm';
     $('#searchFilters .' + filtersClass).each(function () {
         var filterItems = $(this).tagsinput('items');
+        var filterSearchValues = [];
+        for (var i = 0; i < filterItems.length; i++) {
+            filterSearchValues.push(filterItems[i].searchValue);
+        }
         var paramKey = $(this).attr('paramKey');
-        searchFilters[paramKey] = filterItems;
+        searchFilters[paramKey] = filterSearchValues;
     });
 
     return searchFilters;
