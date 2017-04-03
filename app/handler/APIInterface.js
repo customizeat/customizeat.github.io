@@ -27,7 +27,8 @@ function APIInterface(reqHandler, userParams = {}) {
         // in the "Parameters" section
       },
       defaultParams: {
-        requirePictures: 'true'
+        requirePictures: 'true',
+        maxResult: '30'
       },
       userParams: userParams
     };
@@ -46,7 +47,7 @@ function APIInterface(reqHandler, userParams = {}) {
 
       var addParams = function (q, params) {
         for (var param in params) {
-          if(params[param].length) {
+          if (params[param] !== undefined && params[param] !== '') {
             var paramVal = params[param];
             // if params[param] == ['beef', 'tomato'],
             // where param might be "includeIngredient[]"
@@ -93,6 +94,7 @@ function APIInterface(reqHandler, userParams = {}) {
         var fullUrl = url + queryParams;
 
         var res = reqHandler.get(fullUrl);
+        console.log('querying url: ' + fullUrl);
         res.then(function(result) {
           resolve(result);
         }, function(err) {
