@@ -145,22 +145,52 @@ $(document).ready(function() {
   });
 });
 
+var list = [];
+var recipesofTheWeek = ['Hearty-Tuscan-soup-1416718', 'Hamburger-Soup-2054140'];
+for (var i = 0; i < recipesofTheWeek.length; i++) {
+  var recipeInfo = api.getRecipe(recipesofTheWeek[i]);
+  //console.log(recipeInfo);
+  recipeInfo.then(function (res) {
+    // do something with the api result
+    console.log(res);
+    var json = {
+      url: 'static/pizza.png',
+      name: res.response.name,
+      alt_name: res.response.id,
+      description : 'I don\'t know'
+    };
+    // now in here, update the carousel using the info(build templates
+    // here using the api data)
+    list.push(json);
+  }, function (error) {
+    // err handling
+  })
+}
+
+
 // read from pre compiled template to build html.
 // reading from templates/carousels/carousels_item.tpl.js
 var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
-var json = {
-    url: 'static/dimsum.jpg',
-    alt_name: 'dimsum',
-    name: 'Dim Sum',
-    description: 'Dim Sum is traditionally served during lunch'
-};
 
-var carouselsItemDiv = carouselsItemTpl({json: json});
+//
+// var json2 = {
+//     url: 'static/pizza.png',
+//     alt_name: 'pizza',
+//     name: 'Pizza',
+//     description: 'pizza is traditionally served during lunch'
+// };
+
+// var carouselsItemDiv = carouselsItemTpl({json: json});
 
 // replace the contents when the button is clicked
 function replaceCarousel() {
   $('#recommendation').html('');
-  $('#recommendation').append(carouselsItemDiv);
+  for (var i = 0; i < list.length; i++) {
+    var json = list[i];
+    var carouselsItemDiv = carouselsItemTpl({json: json});
+    $('#recommendation').append(carouselsItemDiv);
+  }
+  // $('#recommendation').append(carouselsItemDiv);
   $('#recommendation').children().first().addClass('active');
 }
 
