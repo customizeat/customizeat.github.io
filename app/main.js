@@ -193,19 +193,3 @@ function replaceCarousel() {
   // $('#recommendation').append(carouselsItemDiv);
   $('#recommendation').children().first().addClass('active');
 }
-
-/*
-var metadataPromise = api.getMetadata('allergy');
-metadataPromise.then(function(result) {
-  console.log('metadata');
-  console.log(result);
-}, function(err) {
-  //err
-});
-*/
-
-/*
-var requestArgs = {'includeIngredient[]': ['beef', 'cognac', 'onion soup mix']};
-var queryParams = api.buildQueryParams('onion soup', requestArgs);
-console.log(queryParams);
-*/
