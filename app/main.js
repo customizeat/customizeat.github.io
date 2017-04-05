@@ -153,11 +153,13 @@ for (var i = 0; i < recipesofTheWeek.length; i++) {
   //console.log(recipeInfo);
   recipeInfo.then(function (res) {
     // do something with the api result
+    console.log(res);
     var json = {
       url: res.response.images[0].hostedLargeUrl,
       name: res.response.name,
       alt_name: res.response.id,
-      description : res.response.attributes.course
+      description : res.response.attributes.course,
+      recipeID : res.response.id
     };
     list.push(json);
   }, function (error) {
@@ -168,7 +170,7 @@ for (var i = 0; i < recipesofTheWeek.length; i++) {
 // read from pre compiled template to build html.
 // reading from templates/carousels/carousels_item.tpl.js
 var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
-console.log(list);
+//console.log(list);
 // replace the contents when the button is clicked
 function replaceCarousel() {
   $('#recommendation').html('');
