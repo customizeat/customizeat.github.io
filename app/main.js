@@ -50,7 +50,6 @@ function searchNext (searchQuery) {
     searchFilters.start = nextStart;
     var resPromise = api.searchRecipes(searchQuery, searchFilters);
     resPromise.then(function(result) {
-        console.log(result);
         displayResult(result, searchQuery);
         lastSearch.start += nextStart;
         lastSearch.searchQuery = searchQuery;
@@ -162,6 +161,7 @@ function replaceCarousel() {
 function parseSearchFilter() {
     var searchFilters = {};
     var parseFromLargeView = $('#searchQueryLG').is(':visible');
+    // decide which one of the input fields to parse from depending on the view
     var filtersClass = parseFromLargeView ? 'search-filters-lg' : 'search-filters-sm';
     $('#searchFilters .' + filtersClass).each(function () {
         var filterItems = $(this).tagsinput('items');
@@ -169,7 +169,7 @@ function parseSearchFilter() {
         for (var i = 0; i < filterItems.length; i++) {
             filterSearchValues.push(filterItems[i].searchValue);
         }
-        var paramKey = $(this).attr('paramKey');
+        var paramKey = $(this).attr('paramKey'); // paramKey for e.g. allowedIngredient[]
         searchFilters[paramKey] = filterSearchValues;
     });
 
@@ -182,17 +182,19 @@ function enableTagsinput() {
     var appParams = api.getAppParams();
     $('#searchFilters .' + filtersClass).each(function () {
         var $filterInput = $(this);
-        var paramKey = $filterInput.attr('paramKey');
-        var metadataType = appParams[paramKey].metadataType;
+        var paramKey = $filterInput.attr('paramKey'); // e.g. 'allowedIngredient[]'
+        var metadataType = appParams[paramKey].metadataType; // read internals from APIInterface
         var metadataPromise = api.getMetadata(metadataType);
         metadataPromise.then(function(result) {
           var metadataArr = [];
           for (var item in result.response) {
               var metadataObj = result.response[item];
+              // some metadata do not have description attribute, so instead use shortDescription
               metadataObj.description = metadataObj.shortDescription || metadataObj.description;
               metadataArr.push(metadataObj);
           }
 
+          // necessary stuff for typeahead engine
           var searchFilter = new Bloodhound({
               datumTokenizer: Bloodhound.tokenizers.obj.whitespace('description'),
               queryTokenizer: Bloodhound.tokenizers.whitespace,
