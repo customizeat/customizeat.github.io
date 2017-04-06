@@ -168,6 +168,10 @@ background: #FCA08D;
   transition-delay: .2s;
 }
 
+#recommendation .carousel-caption a {
+  color: white;
+}
+
 .carousel-inner > .item > img,
 .carousel-inner > .item > a > img {
   width: 70%;
