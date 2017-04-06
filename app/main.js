@@ -182,7 +182,6 @@ function loadRecipesOfTheWeek() {
 // read from pre compiled template to build html.
 // reading from templates/carousels/carousels_item.tpl.js
 var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
-//console.log(list);
 // replace the contents when the button is clicked
 function replaceCarousel() {
   $('#recommendation').html('');
