@@ -168,7 +168,7 @@ background: #FCA08D;
   transition-delay: .2s;
 }
 
-#recommendation .carousel-caption .info {
+#recommendation .carousel-caption a {
   color: white;
 }
 

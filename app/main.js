@@ -123,7 +123,7 @@ function displayResult (result, searchQuery) {
 }
 
 $(document).ready(function() {
-  replaceCarousel();
+  loadRecipesOfTheWeek();
   $('#recipeSearchForm').submit(function (event) {
     event.preventDefault();
 
@@ -145,26 +145,38 @@ $(document).ready(function() {
   });
 });
 
-var list = [];
-var recipesofTheWeek = ['Hearty-Tuscan-soup-1416718', 'Hamburger-Soup-2054140',
-'Kim-Cheese-Fries-1048487', 'Fettucini-Bolognese-1020206', 'Steaks-1833976'];
-for (var i = 0; i < recipesofTheWeek.length; i++) {
-  var recipeInfo = api.getRecipe(recipesofTheWeek[i]);
-  //console.log(recipeInfo);
-  recipeInfo.then(function (res) {
-    // do something with the api result
-    console.log(res);
-    var json = {
-      url: res.response.images[0].hostedLargeUrl,
-      name: res.response.name,
-      alt_name: res.response.id,
-      description : res.response.attributes.course,
-      recipeID : res.response.id
-    };
-    list.push(json);
-  }, function (error) {
-    // err handling
-  })
+var carouselsItemlist = [];
+function loadRecipesOfTheWeek() {
+  var recipesOfTheWeek =
+  [
+    'Hearty-Tuscan-soup-1416718',
+    'Hamburger-Soup-2054140',
+    'Kim-Cheese-Fries-1048487',
+    'Fettucini-Bolognese-1020206',
+    'Steaks-1833976'
+  ];
+  var count = recipesOfTheWeek.length;
+  for (var i = 0; i < recipesOfTheWeek.length; i++) {
+    var recipeInfo = api.getRecipe(recipesOfTheWeek[i]);
+    recipeInfo.then(function (res) {
+      // do something with the api result
+      console.log(res);
+      var json = {
+        url: res.response.images[0].hostedLargeUrl,
+        name: res.response.name,
+        alt_name: res.response.id,
+        description : res.response.attributes.course,
+        recipeID : res.response.id
+      };
+      carouselsItemlist.push(json);
+      count--;
+      if (count == 0) {
+        replaceCarousel();
+      }
+    }, function (error) {
+      // err handling
+    })
+  }
 }
 
 // read from pre compiled template to build html.
@@ -174,8 +186,8 @@ var carouselsItemTpl = Handlebars.templates['carousels_item.hbs'];
 // replace the contents when the button is clicked
 function replaceCarousel() {
   $('#recommendation').html('');
-  for (var i = 0; i < list.length; i++) {
-    var json = list[i];
+  for (var i = 0; i < carouselsItemlist.length; i++) {
+    var json = carouselsItemlist[i];
     var carouselsItemDiv = carouselsItemTpl({json: json});
     $('#recommendation').append(carouselsItemDiv);
   }
