@@ -137,6 +137,11 @@ $(document).ready(function() {
     var $visibleSearchBox = $('.searchQuery:visible').first();
     var searchQuery = $visibleSearchBox.val();
 
+    $('#recipeSearchForm').click(function() {
+      $('#myCarousel').hide();
+      $('#CarouselTitle').hide();
+    });
+
     searchNext(searchQuery);
   });
 });
@@ -186,7 +191,12 @@ function replaceCarousel() {
     var carouselsItemDiv = carouselsItemTpl({json: json});
     $('#recommendation').append(carouselsItemDiv);
   }
+
+  for (var j = 0; j < carouselsItemlist.length; j++) {
+    $('#myCarousel .carousel-indicators').append('<li data-target="#myCarousel" data-slide-to="' + j + '"></li>');
+  }
   $('#recommendation').children().first().addClass('active');
+  $('#myCarousel .carousel-indicators').children().first().addClass('active');
 }
 
 function parseSearchFilter() {
