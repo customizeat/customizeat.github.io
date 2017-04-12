@@ -137,10 +137,8 @@ $(document).ready(function() {
     var $visibleSearchBox = $('.searchQuery:visible').first();
     var searchQuery = $visibleSearchBox.val();
 
-    $('#recipeSearchForm').click(function() {
-      $('#myCarousel').hide();
-      $('#CarouselTitle').hide();
-    });
+    $('#myCarousel').hide();
+    $('#carouselTitle').hide();
 
     searchNext(searchQuery);
   });
