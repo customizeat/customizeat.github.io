@@ -1,0 +1,31 @@
+<ul class="list-group">
+  <li class="list-group-item">
+    <span class="label color-customizeat">Cook Time</span> {{info.cookTime}}
+    <span class="label color-customizeat">Prep Time</span> {{info.prepTime}}
+    <span class="label color-customizeat">Total Time</span> {{info.totalTime}}
+  </li>
+  <li class="list-group-item"><span class="label color-customizeat">
+    Serves</span> {{info.numberOfServings}}
+  </li>
+  <li class="list-group-item">
+    <span class="label color-customizeat">Calories</span> {{info.calories}} Kcal
+    </li>
+  <li class="list-group-item">
+    <button class="btn btn-sm btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Nutrition Facts&nbsp;<span class="caret"></span>
+    </button>
+    <div class="collapse" id="collapseExample" style="margin-top: 10px;">
+      <div class="well well-white">
+        {{#each info.nutritionEstimates}}
+          <div><span>
+          {{#if this.description}}
+            {{this.description}}
+          {{^}}
+            {{this.attribute}}
+          {{/if}}
+        </span>:&nbsp;{{this.value}}&nbsp;{{this.unit.plural}}</div>
+        {{/each}}
+      </div>
+    </div>
+  </li>
+</ul>
