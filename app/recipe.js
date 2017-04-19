@@ -67,9 +67,20 @@ function loadPage() {
     $('#ingredients').html(ingredientsHtml);
 
     // directions resp.source.sourceRecipeUrl
-    /*var iframe = "<iframe src='" + resp.source.sourceRecipeUrl + "'><iframe>";
-    $('#directions').html(iframe);*/
+    $('#loadDirectionsBtn').attr('sourceUrl', resp.source.sourceRecipeUrl);
   }, function (error) {
     console.log(error);
+  });
+}
+
+function loadDirections (btn, sourceRecipeUrl) {
+  $(btn).hide();
+  $('#loadingDirections').show();
+
+  var iframe = "<iframe id='directionsIframe' style='max-width: 100%; width: 100%; min-height: 700px; display: none;' src='" + sourceRecipeUrl + "'><iframe>";
+  $(btn).parent().append(iframe);
+  $('#directionsIframe').on('load', function () {
+    $('#loadingDirections').hide();
+    $('#directionsIframe').show();
   });
 }
