@@ -2,9 +2,35 @@ var crh = CacheRequestHandler();
 var hrh = HttpRequestHandler();
 var reqHandler = RequestHandler(hrh, crh);
 var api = APIInterface(reqHandler, {});
+var queryString = parseQueryString();
+var recipeID = queryString.recipeID;
+var allowedNutritionAttr = [
+  'K', 'NA', 'CHOLE', 'FATRN', 'FASAT', 'CHOCDF', 'FIBTG', 'PROCNT', 'VITC',
+  'CA', 'FE', 'SUGAR', 'ENERC_KCAL', 'FAT', 'VITA_IU'
+];
 
 $(document).ready(function () {
-  var recipeID = 'Kim-Cheese-Fries-1048487';
+  if (recipeID && recipeID.length) {
+    $('#recipeContent').show();
+    loadPage();
+  } else {
+    $('#content404').show();
+  }
+});
+
+function parseQueryString () {
+  var parsedParameters = {},
+    uriParameters = location.search.substr(1).split('&');
+
+  for (var i = 0; i < uriParameters.length; i++) {
+    var parameter = uriParameters[i].split('=');
+    parsedParameters[parameter[0]] = decodeURIComponent(parameter[1]);
+  }
+
+  return parsedParameters;
+}
+
+function loadPage() {
   var recipeInfo = api.getRecipe(recipeID);
   recipeInfo.then(function (res) {
     console.log(res);
@@ -21,8 +47,17 @@ $(document).ready(function () {
 
     // recipe info
     var recipeInfoTpl = Handlebars.templates['recipeInfo.hbs'];
-    var info = resp;
-    info.calories = resp.nutritionEstimates[0].value;
+    var info = Object.assign({}, resp);
+    info.nutritionEstimates = [];
+    for (var i in resp.nutritionEstimates) {
+      var nutr = resp.nutritionEstimates[i];
+      if (allowedNutritionAttr.indexOf(nutr.attribute) !== -1) {
+        info.nutritionEstimates.push(nutr);
+        if (nutr.attribute === 'ENERC_KCAL') {
+          info.calories = nutr.value;
+        }
+      }
+    }
     var recipeInfoHtml = recipeInfoTpl({info: info});
     $('#recipeInfo').html(recipeInfoHtml);
 
@@ -37,4 +72,4 @@ $(document).ready(function () {
   }, function (error) {
     console.log(error);
   });
-});
+}

@@ -3,7 +3,7 @@
 templates['recipeInfo.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "          <div><span>\n"
+  return "          <div style=\"margin: 5px 0px; border-bottom: 1px solid #777;\"><span>\n"
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.description : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
     + "        </span>:&nbsp;"
     + alias2(alias1((depth0 != null ? depth0.value : depth0), depth0))
@@ -21,7 +21,7 @@ templates['recipeInfo.hbs'] = template({"1":function(container,depth0,helpers,pa
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "<ul class=\"list-group\">\n  <li class=\"list-group-item\">\n    <span class=\"label color-customizeat\">Cook Time</span> "
+  return "<ul class=\"list-group\" style=\"margin-bottom: 0px;\">\n  <li class=\"list-group-item\">\n    <span class=\"label color-customizeat\">Cook Time</span> "
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.cookTime : stack1), depth0))
     + "\n    <span class=\"label color-customizeat\">Prep Time</span> "
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.prepTime : stack1), depth0))

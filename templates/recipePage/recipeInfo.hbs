@@ -1,4 +1,4 @@
-<ul class="list-group">
+<ul class="list-group" style="margin-bottom: 0px;">
   <li class="list-group-item">
     <span class="label color-customizeat">Cook Time</span> {{info.cookTime}}
     <span class="label color-customizeat">Prep Time</span> {{info.prepTime}}
@@ -17,7 +17,7 @@
     <div class="collapse" id="collapseExample" style="margin-top: 10px;">
       <div class="well well-white">
         {{#each info.nutritionEstimates}}
-          <div><span>
+          <div style="margin: 5px 0px; border-bottom: 1px solid #777;"><span>
           {{#if this.description}}
             {{this.description}}
           {{^}}
