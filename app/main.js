@@ -126,6 +126,7 @@ function displayResult (result, searchQuery) {
 
 $(document).ready(function() {
   enableTagsinput();
+  syncSearchFilters();
   replaceCarousel();
   loadRecipesOfTheWeek();
 
@@ -159,7 +160,6 @@ function loadRecipesOfTheWeek() {
     var recipeInfo = api.getRecipe(recipesOfTheWeek[i]);
     recipeInfo.then(function (res) {
       // do something with the api result
-      console.log(res);
       var json = {
         url: res.response.images[0].hostedLargeUrl,
         name: res.response.name,
@@ -215,11 +215,48 @@ function parseSearchFilter() {
     return searchFilters;
 }
 
+function syncSearchFilters() {
+  // setup syncing for .search-filters-lg
+  $('.search-filters-lg').each(function () {
+    // setup onchange watcher
+    var largeInputID = $(this).attr('id');
+    var smallInputID = largeInputID.replace('LG', 'SM');
+
+    $('#' + largeInputID).on('itemAdded', function(event) {
+        // event.item: contains the item
+        $('#' + smallInputID).tagsinput('add', event.item);
+    });
+
+    $('#' + largeInputID).on('itemRemoved', function(event) {
+        // event.item: contains the item
+        $('#' + smallInputID).tagsinput('remove', event.item);
+    });
+  });
+  // setup syncing for .search-filetrs-sm
+  $('.search-filters-sm').each(function () {
+    // setup onchange watcher
+    var smallInputID = $(this).attr('id');
+    var largeInputID = smallInputID.replace('SM', 'LG');
+
+    $('#' + smallInputID).on('itemAdded', function(event) {
+        // event.item: contains the item
+        $('#' + largeInputID).tagsinput('add', event.item);
+    });
+
+    /* if condition - check taginpus if there is ingredient that wants to be removed and if not do not run this code */
+    $('#' + smallInputID).on('itemRemoved', function(event) {
+        // event.item: contains the item
+        $('#' + largeInputID).tagsinput('remove', event.item);
+    });
+  });
+}
+
+
+
 function enableTagsinput() {
     var parseFromLargeView = $('#searchQueryLG').is(':visible');
-    var filtersClass = parseFromLargeView ? 'search-filters-lg' : 'search-filters-sm';
     var appParams = api.getAppParams();
-    $('#searchFilters .' + filtersClass).each(function () {
+    $('#searchFilters .search-filters-lg, #searchFilters .search-filters-sm' ).each(function () {
         var $filterInput = $(this);
         var paramKey = $filterInput.attr('paramKey'); // e.g. 'allowedIngredient[]'
         var metadataType = appParams[paramKey].metadataType; // read internals from APIInterface
