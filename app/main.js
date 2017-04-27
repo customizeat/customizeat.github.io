@@ -229,9 +229,15 @@ function syncSearchFilters() {
 
     $('#' + largeInputID).on('itemRemoved', function(event) {
         // event.item: contains the item
-        $('#' + smallInputID).tagsinput('remove', event.item);
+        var tagsinputList = $('#' + smallInputID).tagsinput('items');
+        for (var i in tagsinputList) {
+          if (tagsinputList[i] === event.item ) {
+            $('#' + smallInputID).tagsinput('remove', event.item);
+          }
+        }
     });
   });
+
   // setup syncing for .search-filetrs-sm
   $('.search-filters-sm').each(function () {
     // setup onchange watcher
@@ -243,11 +249,16 @@ function syncSearchFilters() {
         $('#' + largeInputID).tagsinput('add', event.item);
     });
 
-    /* if condition - check taginpus if there is ingredient that wants to be removed and if not do not run this code */
-    $('#' + smallInputID).on('itemRemoved', function(event) {
-        // event.item: contains the item
-        $('#' + largeInputID).tagsinput('remove', event.item);
-    });
+    /* if condition - check taginput if there is ingredient that wants to be removed and if not do not run this code */
+      $('#' + smallInputID).on('itemRemoved', function(event) {
+          // event.item: contains the item
+        var tagsinputList = $('#' + largeInputID).tagsinput('items');
+        for (var i in tagsinputList) {
+          if (tagsinputList[i] === event.item ) {
+            $('#' + largeInputID).tagsinput('remove', event.item);
+          }
+        }
+      });
   });
 }
 
