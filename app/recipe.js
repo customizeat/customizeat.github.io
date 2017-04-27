@@ -67,6 +67,7 @@ function loadPage() {
     $('#ingredients').html(ingredientsHtml);
 
     // directions resp.source.sourceRecipeUrl
+    var sourceRecipeUrl = resp.source.sourceRecipeUrl.replace("http://", "https://");
     $('#loadDirectionsBtn').attr('sourceUrl', resp.source.sourceRecipeUrl);
   }, function (error) {
     console.log(error);
