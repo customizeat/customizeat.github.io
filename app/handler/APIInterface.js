@@ -21,10 +21,15 @@ function APIInterface(reqHandler, userParams = {}) {
       ],
       appParams: {
         'allowedIngredient[]': { 'metadataType': 'ingredient' },
-        'excludedIngredient[]': { 'metadataType': 'ingredient' }
-        // fill in the rest of the parameters from
-        // https://developer.yummly.com/documentation
-        // in the "Parameters" section
+        'excludedIngredient[]': { 'metadataType': 'ingredient' },
+        'allowedAllergy[]': { 'metadataType': 'allergy' },
+        'allowedDiet[]': { 'metadataType': 'diet' },
+        'allowedCuisine[]': { 'metadataType': 'cuisine' },
+        'excludedCuisine[]': { 'metadataType': 'cuisine' },
+        'allowedCourse[]': { 'metadataType': 'course' },
+        'excludedCourse[]': { 'metadataType': 'course' },
+        'allowedHoliday[]': { 'metadataType': 'holiday' },
+        'excludedHoliday[]': { 'metadataType': 'holiday' }
       },
       defaultParams: {
         requirePictures: 'true',

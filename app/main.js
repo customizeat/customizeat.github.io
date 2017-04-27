@@ -46,7 +46,9 @@ function searchNext (searchQuery) {
     }
 
     $('#loadingModal').modal('show');
-    var resPromise = api.searchRecipes(searchQuery, { start: nextStart});
+    var searchFilters = parseSearchFilter();
+    searchFilters.start = nextStart;
+    var resPromise = api.searchRecipes(searchQuery, searchFilters);
     resPromise.then(function(result) {
         displayResult(result, searchQuery);
         lastSearch.start += nextStart;
@@ -123,7 +125,11 @@ function displayResult (result, searchQuery) {
 }
 
 $(document).ready(function() {
+  enableTagsinput();
+  syncSearchFilters();
+  replaceCarousel();
   loadRecipesOfTheWeek();
+
   $('#recipeSearchForm').submit(function (event) {
     event.preventDefault();
 
@@ -131,15 +137,9 @@ $(document).ready(function() {
     // so we must use first() to wrap it as a jquery element.
     var $visibleSearchBox = $('.searchQuery:visible').first();
     var searchQuery = $visibleSearchBox.val();
-    /*
-    var displaySize = $visibleSearchBox.attr('id') === 'searchQueryLG' ? 'LG' : 'SM';
-    var includeIngredients = $('#includeIngredients' + displaySize).val() || '';
-    var excludeIngredients = $('#excludeIngredients' + displaySize).val() || '';
-    var requestParams = {
-      'allowedIngredient[]': [includeIngredients], // this must be a list
-      'excludeIngredients[]': [excludeIngredients] // this must be a list
-    };
-    */
+
+    $('#myCarousel').hide();
+    $('#carouselTitle').hide();
 
     searchNext(searchQuery);
   });
@@ -160,7 +160,6 @@ function loadRecipesOfTheWeek() {
     var recipeInfo = api.getRecipe(recipesOfTheWeek[i]);
     recipeInfo.then(function (res) {
       // do something with the api result
-      console.log(res);
       var json = {
         url: res.response.images[0].hostedLargeUrl,
         name: res.response.name,
@@ -190,21 +189,116 @@ function replaceCarousel() {
     var carouselsItemDiv = carouselsItemTpl({json: json});
     $('#recommendation').append(carouselsItemDiv);
   }
+
+  for (var j = 0; j < carouselsItemlist.length; j++) {
+    $('#myCarousel .carousel-indicators').append('<li data-target="#myCarousel" data-slide-to="' + j + '"></li>');
+  }
   $('#recommendation').children().first().addClass('active');
+  $('#myCarousel .carousel-indicators').children().first().addClass('active');
 }
 
-/*
-var metadataPromise = api.getMetadata('allergy');
-metadataPromise.then(function(result) {
-  console.log('metadata');
-  console.log(result);
-}, function(err) {
-  //err
-});
-*/
+function parseSearchFilter() {
+    var searchFilters = {};
+    var parseFromLargeView = $('#searchQueryLG').is(':visible');
+    // decide which one of the input fields to parse from depending on the view
+    var filtersClass = parseFromLargeView ? 'search-filters-lg' : 'search-filters-sm';
+    $('#searchFilters .' + filtersClass).each(function () {
+        var filterItems = $(this).tagsinput('items');
+        var filterSearchValues = [];
+        for (var i = 0; i < filterItems.length; i++) {
+            filterSearchValues.push(filterItems[i].searchValue);
+        }
+        var paramKey = $(this).attr('paramKey'); // paramKey for e.g. allowedIngredient[]
+        searchFilters[paramKey] = filterSearchValues;
+    });
 
-/*
-var requestArgs = {'includeIngredient[]': ['beef', 'cognac', 'onion soup mix']};
-var queryParams = api.buildQueryParams('onion soup', requestArgs);
-console.log(queryParams);
-*/
+    return searchFilters;
+}
+
+function syncSearchFilters() {
+  // setup syncing for .search-filters-lg
+  $('.search-filters-lg').each(function () {
+    // setup onchange watcher
+    var largeInputID = $(this).attr('id');
+    var smallInputID = largeInputID.replace('LG', 'SM');
+
+    $('#' + largeInputID).on('itemAdded', function(event) {
+        // event.item: contains the item
+        $('#' + smallInputID).tagsinput('add', event.item);
+    });
+
+    $('#' + largeInputID).on('itemRemoved', function(event) {
+        // event.item: contains the item
+        var tagsinputList = $('#' + smallInputID).tagsinput('items');
+        for (var i in tagsinputList) {
+          if (tagsinputList[i] === event.item ) {
+            $('#' + smallInputID).tagsinput('remove', event.item);
+          }
+        }
+    });
+  });
+
+  // setup syncing for .search-filetrs-sm
+  $('.search-filters-sm').each(function () {
+    // setup onchange watcher
+    var smallInputID = $(this).attr('id');
+    var largeInputID = smallInputID.replace('SM', 'LG');
+
+    $('#' + smallInputID).on('itemAdded', function(event) {
+        // event.item: contains the item
+        $('#' + largeInputID).tagsinput('add', event.item);
+    });
+
+    /* if condition - check taginput if there is ingredient that wants to be removed and if not do not run this code */
+      $('#' + smallInputID).on('itemRemoved', function(event) {
+          // event.item: contains the item
+        var tagsinputList = $('#' + largeInputID).tagsinput('items');
+        for (var i in tagsinputList) {
+          if (tagsinputList[i] === event.item ) {
+            $('#' + largeInputID).tagsinput('remove', event.item);
+          }
+        }
+      });
+  });
+}
+
+
+
+function enableTagsinput() {
+    var parseFromLargeView = $('#searchQueryLG').is(':visible');
+    var appParams = api.getAppParams();
+    $('#searchFilters .search-filters-lg, #searchFilters .search-filters-sm' ).each(function () {
+        var $filterInput = $(this);
+        var paramKey = $filterInput.attr('paramKey'); // e.g. 'allowedIngredient[]'
+        var metadataType = appParams[paramKey].metadataType; // read internals from APIInterface
+        var metadataPromise = api.getMetadata(metadataType);
+        metadataPromise.then(function(result) {
+          var metadataArr = [];
+          for (var item in result.response) {
+              var metadataObj = result.response[item];
+              // some metadata do not have description attribute, so instead use shortDescription
+              metadataObj.description = metadataObj.shortDescription || metadataObj.description;
+              metadataArr.push(metadataObj);
+          }
+
+          // necessary stuff for typeahead engine
+          var searchFilter = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.obj.whitespace('description'),
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              local: metadataArr
+          });
+          searchFilter.initialize();
+          $filterInput.tagsinput({
+              itemValue: 'searchValue',
+              itemText: 'description',
+              typeaheadjs: {
+                  name: $filterInput.attr('id'),
+                  displayKey: 'description',
+                  source: searchFilter.ttAdapter()
+              }
+          });
+        }, function(err) {
+          //err
+        });
+    });
+}
