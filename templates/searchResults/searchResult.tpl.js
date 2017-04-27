@@ -11,7 +11,7 @@ templates['searchResult.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":funct
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.json : depth0)) != null ? stack1.alt_name : stack1), depth0))
     + "\">\n        <div class=\"overlay\">\n           <h3>Cook Time: "
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.json : depth0)) != null ? stack1.cookTime : stack1), depth0))
-    + "</h3>\n           <a class=\"info\" href=\"#"
+    + "</h3>\n           <a class=\"info\" href=\"recipe.html?recipeID="
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.json : depth0)) != null ? stack1.recipeID : stack1), depth0))
     + "\">\n              Open recipe&nbsp;<span class=\"glyphicon glyphicon-new-window\"></span>\n           </a>\n        </div>\n    </div>\n    <div class=\"caption\">\n      <p style=\"font-size: 1pt;\">&nbsp;</p>\n      <h5>"
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.json : depth0)) != null ? stack1.name : stack1), depth0))
