@@ -68,7 +68,7 @@ function loadPage() {
 
     // directions resp.source.sourceRecipeUrl
     var sourceRecipeUrl = resp.source.sourceRecipeUrl.replace("http://", "https://");
-    $('#loadDirectionsBtn').attr('sourceUrl', resp.source.sourceRecipeUrl);
+    $('#loadDirectionsBtn').attr('sourceUrl', sourceRecipeUrl);
   }, function (error) {
     console.log(error);
   });
